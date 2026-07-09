@@ -351,3 +351,5 @@ AtariSIO changelog:
   - MiscUtils: ensure null terminator in ShortenFilename
   - tools: make Makefile self-sufficient for curses/zlib flags when
     building directly in the tools directory
+  - Makefile: allow overriding INST_DIR via environment variable
+  - driver: require root privileges to install the kernel module
