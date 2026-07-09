@@ -80,7 +80,9 @@ void FileInput::SplitInputIntoPathAndFilename()
 		char *home = getenv("HOME");
 		if (home == NULL) {
 			struct passwd *pw = getpwuid(getuid());
-			home = pw->pw_dir;
+			if (pw != NULL) {
+				home = pw->pw_dir;
+			}
 		}
 		if (home != NULL) {
 			unsigned int hlen = strlen(home);
@@ -100,7 +102,9 @@ bool FileInput::PrepareForFinish()
 		char *home = getenv("HOME");
 		if (home == NULL) {
 			struct passwd *pw = getpwuid(getuid());
-			home = pw->pw_dir;
+			if (pw != NULL) {
+				home = pw->pw_dir;
+			}
 		}
 		if (home != NULL) {
 			char tmp[fCurrentStringLength + strlen(home)];
