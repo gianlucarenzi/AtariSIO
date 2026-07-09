@@ -248,7 +248,7 @@ bool DeviceManager::CreateVirtualDrive(
 		return false;
 	}
 	int len = strlen(absPath);
-	if ((len > 0) && (absPath[len-1] != DIR_SEPARATOR)) {
+	if ((len > 0) && (len < PATH_MAX - 1) && (absPath[len-1] != DIR_SEPARATOR)) {
 		absPath[len] = DIR_SEPARATOR;
 		absPath[len+1] = 0;
 	}
