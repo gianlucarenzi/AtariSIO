@@ -335,3 +335,19 @@ AtariSIO changelog:
     space to add a directory as one of the last entries
   - README.lotharek: document that current SIO2PC/1050-2-PC USB include fixes
     for +5V and inverted command issues present in first revisions
+
+2026-07-09: (0.30-260709)
+  - fix double-free in SearchPath destructor
+  - UserspaceSIOWrapper: bound-check length in ReceiveDataFrame
+  - DCMCodec: validate offset in DecodeRec44 to avoid heap overflow
+  - DeviceManager: fix off-by-one in CreateVirtualDrive
+  - dir2atr: fix use of uninitialized idx with -a and no -b
+  - casinfo: fix argv indexing when given multiple files
+  - atariserver-nocurses: handle NULL from readline() on EOF
+  - AtrSIOHandler: avoid integer overflow in percom put
+  - SIOWrapper: fix fd leak on driver version mismatch
+  - PrinterHandler, Coprocess: fix Coprocess leak and zombie child
+  - FileInput: check getpwuid() return value
+  - MiscUtils: ensure null terminator in ShortenFilename
+  - tools: make Makefile self-sufficient for curses/zlib flags when
+    building directly in the tools directory
