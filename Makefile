@@ -39,7 +39,7 @@ MDIR = /lib/modules/$(VERSION)/misc
 # the header file atarisio.h will be installed in INST_DIR/include,
 ########################################################################
 
-INST_DIR = /usr/local
+INST_DIR ?= /usr/local
 #INST_DIR = /usr/local/atarisio
 #INST_DIR = /opt/hias
 
