@@ -5,8 +5,11 @@
 
 driver/.atarisio.*
 driver/.tmp_versions
+driver/.Module.symvers.cmd
+driver/.modules.order.cmd
 driver/Module.symvers
 driver/atarisio.ko
+driver/atarisio.mod
 driver/atarisio.mod.c
 driver/modules.order
 
