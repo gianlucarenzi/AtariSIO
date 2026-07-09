@@ -454,6 +454,10 @@ static char * my_readline(const char* prompt)
 
 	set_noncanon_stdin_mode();
 
+	if (filename == NULL) {
+		return NULL;
+	}
+
 	int l = strlen(filename);
 	while (l>0 && isspace(filename[l-1])) {
 			filename[l---1] = 0;
