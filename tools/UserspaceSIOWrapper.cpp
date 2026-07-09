@@ -890,6 +890,10 @@ int UserspaceSIOWrapper::SendDataFrame(uint8_t* buf, unsigned int length)
 
 int UserspaceSIOWrapper::ReceiveDataFrame(uint8_t* buf, unsigned int length)
 {
+	if (length > eMaxDataLength) {
+		fLastResult = EATARISIO_ERROR_BLOCK_TOO_LONG;
+		return fLastResult;
+	}
 	UTRACE_SIO_BEGIN("ReceiveDataFrame");
 	fLastResult = ReceiveBuf(length+1, eDelayT3Max + eReceiveHeadroom);
 	UTRACE_SIO_END("ReceiveDataFrame");
