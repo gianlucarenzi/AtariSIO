@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 
 	int i;
 	for (i=1; i<argc; i++) {
-		const char* filename = argv[1];
+		const char* filename = argv[i];
 
 		printf("infos for \"%s\":\n", filename);
 
