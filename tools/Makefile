@@ -45,6 +45,14 @@ ifneq ($(DEFAULT_DEVICE),)
 CXXFLAGS += -DDEFAULT_DEVICE=$(DEFAULT_DEVICE)
 endif
 
+# these are normally computed and exported by the top-level Makefile;
+# fall back to computing them here so "make" also works when run
+# directly from this directory
+NCURSES_CFLAGS ?= $(shell ../getcurses.sh --cflags)
+NCURSES_LDFLAGS ?= $(shell ../getcurses.sh --libs)
+ZLIB_CFLAGS ?= -DUSE_ZLIB
+ZLIB_LDFLAGS ?= -lz
+
 CFLAGS += $(ZLIB_CFLAGS) $(NCURSES_CFLAGS)
 CXXFLAGS += $(ZLIB_CFLAGS) $(NCURSES_CFLAGS)
 
