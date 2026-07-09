@@ -100,6 +100,7 @@ char* MiscUtils::ShortenFilename(const char* filename, unsigned int maxlen, bool
 	if ((pd != NULL) && (pd != tmpstr+len-1) ) {
 		memcpy(s, "...", 3);
 		strncpy(s + 3, pd, maxlen - 2);
+		s[maxlen] = 0;
 		free(tmpstr);
 		return s;
 	}
