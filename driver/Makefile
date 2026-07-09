@@ -50,6 +50,10 @@ dep: # do nothing
 endif
 
 install: $(inst-m) atarisio.h
+	@if [ "$$(id -u)" != "0" ] ; then \
+		echo "error: installing the atarisio driver requires root privileges (use sudo)" >&2 ; \
+		exit 1 ; \
+	fi
 	if test ! -d $(MDIR) ; then \
 		mkdir -p $(MDIR) ; \
 	fi
