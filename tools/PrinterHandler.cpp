@@ -135,6 +135,8 @@ bool PrinterHandler::CloseProcess()
 	if (i != 0) {
 		AWARN("printer process exited with status %d", i);
 	}
+	delete fCoprocess;
+	fCoprocess = NULL;
 	fPrinterStatus = eStatusOK;
 	fProcessSpawned = false;
 	return ret;

@@ -119,11 +119,15 @@ Coprocess::Coprocess(const char* command, int* close_fds, int close_count)
 	if (!fWriteFile) {
 		close(fReadFD);
 		close(write_fd[1]);
+		kill(pid, SIGKILL);
+		waitpid(pid, NULL, 0);
 		throw ErrorObject("cannot open write pipe");
 	}
 	if (fflush(fWriteFile)) {
 		close(fReadFD);
 		fclose(fWriteFile);
+		kill(pid, SIGKILL);
+		waitpid(pid, NULL, 0);
 		throw ErrorObject("cannot open write pipe");
 	}
 
