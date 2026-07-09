@@ -129,7 +129,7 @@ int main(int argc, char**argv)
 	char* directory;
 	char* atrfilename;
 	ESectorLength seclen;
-	unsigned int idx;
+	unsigned int idx = sizeof(BootTypeTable) / sizeof(BootTypeTable[0]) - 1;
 	FILE* bootfile;
 
 	struct stat statbuf;
@@ -203,7 +203,7 @@ int main(int argc, char**argv)
 	if (autorun) {
 		if (BootTypeTable[idx].autorun == false) {
 			printf("autorun not supported for %s boot sectors\n",
-				BootTypeTable[idx].name);
+				BootTypeTable[idx].name ? BootTypeTable[idx].name : "default");
 			goto usage;
 		} else {
 			printf("enabled MyPicoDos autorun mode\n");
