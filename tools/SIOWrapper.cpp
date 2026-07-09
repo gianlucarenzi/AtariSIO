@@ -62,6 +62,7 @@ SIOWrapper* SIOWrapper::CreateSIOWrapper(const char* devName)
 	} else {
 		if ( (version >> 8) != (ATARISIO_VERSION >> 8) ||
 		     (version & 0xff) < (ATARISIO_VERSION & 0xff) ) {
+			close(fileno);
 			throw ErrorObject("atarisio kernel driver version mismatch!");
 		} else {
 			wrapper = new KernelSIOWrapper(fileno);
