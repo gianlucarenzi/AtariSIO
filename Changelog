@@ -352,4 +352,7 @@ AtariSIO changelog:
   - tools: make Makefile self-sufficient for curses/zlib flags when
     building directly in the tools directory
   - Makefile: allow overriding INST_DIR via environment variable
-  - driver: require root privileges to install the kernel module
+  - driver: skip kernel module install with a warning instead of
+    failing when "make install" is not run as root
+  - tools: install without setuid root/chown when not run as root, as
+    long as INST_DIR is writable; error out clearly if it isn't

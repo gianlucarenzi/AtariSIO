@@ -53,6 +53,15 @@ NCURSES_LDFLAGS ?= $(shell ../getcurses.sh --libs)
 ZLIB_CFLAGS ?= -DUSE_ZLIB
 ZLIB_LDFLAGS ?= -lz
 
+# only chown installed binaries to root when actually running as root,
+# so a non-root install to a user-writable INST_DIR still works
+# (without setuid root, direct serial device access won't work though)
+ifeq ($(shell id -u),0)
+INSTALL_OWNER_OPTS = -o root -g users
+else
+INSTALL_OWNER_OPTS =
+endif
+
 CFLAGS += $(ZLIB_CFLAGS) $(NCURSES_CFLAGS)
 CXXFLAGS += $(ZLIB_CFLAGS) $(NCURSES_CFLAGS)
 
@@ -237,11 +246,16 @@ clean: cleanthis
 	$(MAKE) -C 6502 clean
 
 install: $(EXECUTABLES)
-ifdef ALL_IN_ONE
-	if test ! -d $(INST_DIR)/bin ; then \
-		mkdir -p $(INST_DIR)/bin ; \
+	@mkdir -p $(INST_DIR)/bin 2>/dev/null; \
+	if [ ! -w $(INST_DIR)/bin ] ; then \
+		echo "error: $(INST_DIR)/bin is not writable - cannot install tools (check INST_DIR)" >&2 ; \
+		exit 1 ; \
 	fi
-	install -o root -g users -m 4750 atarisio $(INST_DIR)/bin/atarisio
+	@if [ "$$(id -u)" != "0" ] ; then \
+		echo "warning: not running as root - installing without setuid root, direct serial device access won't work" >&2 ; \
+	fi
+ifdef ALL_IN_ONE
+	install $(INSTALL_OWNER_OPTS) -m 4750 atarisio $(INST_DIR)/bin/atarisio
 	ln -s -f $(INST_DIR)/bin/atarisio $(INST_DIR)/bin/atariserver
 	ln -s -f $(INST_DIR)/bin/atarisio $(INST_DIR)/bin/atarixfer
 	ln -s -f $(INST_DIR)/bin/atarisio $(INST_DIR)/bin/adir
@@ -251,17 +265,14 @@ ifdef ALL_IN_ONE
 #	ln -s -f $(INST_DIR)/bin/atarisio $(INST_DIR)/bin/atpdump
 #endif
 else
-	if test ! -d $(INST_DIR)/bin ; then \
-		mkdir -p $(INST_DIR)/bin ; \
-	fi
-	install -o root -g users -m 4750 atariserver $(INST_DIR)/bin/atariserver
-	install -o root -g users -m 4750 atarixfer $(INST_DIR)/bin/atarixfer
-	install -o root -g users -m 755 adir $(INST_DIR)/bin/adir
-	install -o root -g users -m 755 dir2atr $(INST_DIR)/bin/dir2atr
-	install -o root -g users -m 755 ataricom $(INST_DIR)/bin/ataricom
+	install $(INSTALL_OWNER_OPTS) -m 4750 atariserver $(INST_DIR)/bin/atariserver
+	install $(INSTALL_OWNER_OPTS) -m 4750 atarixfer $(INST_DIR)/bin/atarixfer
+	install $(INSTALL_OWNER_OPTS) -m 755 adir $(INST_DIR)/bin/adir
+	install $(INSTALL_OWNER_OPTS) -m 755 dir2atr $(INST_DIR)/bin/dir2atr
+	install $(INSTALL_OWNER_OPTS) -m 755 ataricom $(INST_DIR)/bin/ataricom
 #ifdef ENABLE_ATP
-#	install -o root -g users -m 755 atr2atp $(INST_DIR)/bin/atr2atp
-#	install -o root -g users -m 755 atpdump $(INST_DIR)/bin/atpdump
+#	install $(INSTALL_OWNER_OPTS) -m 755 atr2atp $(INST_DIR)/bin/atr2atp
+#	install $(INSTALL_OWNER_OPTS) -m 755 atpdump $(INST_DIR)/bin/atpdump
 #endif
 endif
 	if test ! -d $(INST_DIR)/include ; then \

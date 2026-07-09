@@ -51,18 +51,18 @@ endif
 
 install: $(inst-m) atarisio.h
 	@if [ "$$(id -u)" != "0" ] ; then \
-		echo "error: installing the atarisio driver requires root privileges (use sudo)" >&2 ; \
-		exit 1 ; \
+		echo "warning: not running as root - skipping atarisio kernel module install" >&2 ; \
+	else \
+		if test ! -d $(MDIR) ; then \
+			mkdir -p $(MDIR) ; \
+		fi ; \
+		install -o root -g root -m 644 $(inst-m) $(MDIR) ; \
+		depmod -a ; \
+		if test ! -d $(INST_DIR)/include ; then \
+			mkdir -p $(INST_DIR)/include ; \
+		fi ; \
+		install -o root -g root -m 644 atarisio.h $(INST_DIR)/include/atarisio.h ; \
 	fi
-	if test ! -d $(MDIR) ; then \
-		mkdir -p $(MDIR) ; \
-	fi
-	install -o root -g root -m 644 $(inst-m) $(MDIR)
-	depmod -a
-	if test ! -d $(INST_DIR) ; then \
-		mkdir -p $(INST_DIR)/include/ ; \
-	fi
-	install -o root -g root -m 644 atarisio.h $(INST_DIR)/include/atarisio.h
 
 uninstall:
 	rm -f $(MDIR)/$(inst-m)
