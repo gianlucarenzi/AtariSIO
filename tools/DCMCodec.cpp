@@ -339,6 +339,12 @@ bool DCMCodec::DecodeRec44(bool beQuiet)
 	if (!ReadOffset(iOffset, beQuiet)) {
 		goto failure_EOF;
 	}
+	if (iOffset > fSectorSize) {
+		if (!beQuiet) {
+			AERROR("invalid offset in DCM-file (DecodeRec44)");
+		}
+		return false;
+	}
 
 	if (fFileIO->ReadBlock( fCurrentBuffer + iOffset, fSectorSize - iOffset ) != (fSectorSize - iOffset) ) {
 		goto failure_EOF;
