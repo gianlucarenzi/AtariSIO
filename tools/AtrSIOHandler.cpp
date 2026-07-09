@@ -531,7 +531,7 @@ int AtrSIOHandler::ProcessCommandFrame(SIO_command_frame& frame, const RCPtr<SIO
 		sides = fBuffer[4] + 1;
 		secLen = fBuffer[7] + (fBuffer[6]<<8);
 
-		total = tracks * sec * sides;
+		total = (uint32_t) tracks * (uint32_t) sec * (uint32_t) sides;
 		if (VerifyPercomFormat(tracks, sides, sec, secLen, total)) {
 			fFormatConfig.fTracksPerSide = tracks;
 			fFormatConfig.fSectorsPerTrack = sec;
