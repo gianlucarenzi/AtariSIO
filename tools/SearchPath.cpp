@@ -71,8 +71,8 @@ SearchPath::~SearchPath()
 		int i;
 		for (i=0;i<fPathEntries;i++) {
 			delete[] fPathDirectories[i];
-			delete[] fPathDirectories;
 		}
+		delete[] fPathDirectories;
 	}
 }
 
